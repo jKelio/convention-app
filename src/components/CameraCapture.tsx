@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 interface CameraCaptureProps {
   onCapture: (imageData: string) => void;
@@ -13,8 +13,10 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const startCamera = useCallback(async () => {
+    setIsLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
@@ -29,8 +31,15 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
     } catch (err) {
       setError("Kamera konnte nicht gestartet werden. Bitte erlauben Sie den Zugriff.");
       console.error("Camera error:", err);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
+
+  // Kamera automatisch starten beim Öffnen
+  useEffect(() => {
+    startCamera();
+  }, [startCamera]);
 
   const stopCamera = useCallback(() => {
     if (stream) {
@@ -87,6 +96,11 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
             >
               Erneut versuchen
             </button>
+          </div>
+        ) : isLoading ? (
+          <div className="text-center p-4">
+            <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-white">Kamera wird gestartet...</p>
           </div>
         ) : !isStreaming ? (
           <button
