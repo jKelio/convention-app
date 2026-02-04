@@ -87,7 +87,7 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
       </div>
 
       <div className="flex-1 flex items-center justify-center relative">
-        {error ? (
+        {error && (
           <div className="text-center p-4">
             <p className="text-red-400 mb-4">{error}</p>
             <button
@@ -97,27 +97,28 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
               Erneut versuchen
             </button>
           </div>
-        ) : isLoading ? (
+        )}
+        {!error && isLoading && !isStreaming && (
           <div className="text-center p-4">
             <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
             <p className="text-white">Kamera wird gestartet...</p>
           </div>
-        ) : !isStreaming ? (
+        )}
+        {!error && !isLoading && !isStreaming && (
           <button
             onClick={startCamera}
             className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 text-lg"
           >
             Kamera starten
           </button>
-        ) : (
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="max-h-full max-w-full"
-          />
         )}
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          className={`max-h-full max-w-full ${isStreaming ? "" : "hidden"}`}
+        />
         <canvas ref={canvasRef} className="hidden" />
       </div>
 
