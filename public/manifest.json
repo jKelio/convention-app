@@ -1,0 +1,17 @@
+{
+  "name": "Recruiting App",
+  "short_name": "Recruiting",
+  "description": "Bewerbungsprofile gemeinsam erstellen",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0070f3",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
