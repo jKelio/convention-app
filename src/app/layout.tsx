@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export const metadata: Metadata = {
   title: "Recruiting App",
   description: "Bewerbungsprofile gemeinsam erstellen",
-  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -27,7 +28,8 @@ export default function RootLayout({
   return (
     <html lang="de">
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon.svg" />
+        <link rel="manifest" href={`${basePath}/manifest.json`} />
+        <link rel="apple-touch-icon" href={`${basePath}/icons/icon.svg`} />
       </head>
       <body className="bg-gray-50 min-h-screen">{children}</body>
     </html>
